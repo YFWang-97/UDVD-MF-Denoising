@@ -50,12 +50,12 @@ Some arguments needs parameters. Replace the `$parameter` with the actual parame
 
 The example files can be downloaded from [here](https://www.dropbox.com/scl/fo/usoouapl9jd8uarwi7fkv/AOusqUYN-FeN7K-q1MqoCa0?rlkey=9evnykpkiadwwu4m5vl92omf4&st=jya48zgs&dl=0). There are two files in the folder: `PtCeO2_030303.tif` is the raw data, and `PtCeO2_030303_udvd_mf.tif` is the denoised result converted to `.tif` format.
 
-To denoise the example data, run the following command:
+To preproduce the denoised result, run the following command:
 
 ```shell
-python denoise_mf.py --data "PATH TO THE FILE/PtCeO2_030303.tif" 
+python denoise_mf.py --data "PATH TO THE FILE/PtCeO2_030303.tif --include-neighbor" 
 ```
-Replacing the `PATH TO THE FILE` with the actual directory to the raw video file location. This line will denoise the TEM movieAfter the denoising process completed, the denoised result `PtCeO2_030303_udvd_mf.npy` can be found in the same directory as the input file.
+Replacing the `PATH TO THE FILE` with the actual directory to the raw video file location. This line will denoise the TEM movie. After the denoising process completed, the denoised result `PtCeO2_030303_udvd_mf.npy` can be found in the same directory as the input file. 
 
 ## Citation
 
@@ -68,6 +68,10 @@ D. Y. Sheth, S. Mohan, J. L. Vincent, R. Manzorro, P. A. Crozier, M. M. Khapra, 
 *Evaluating Unsupervised Denoising Requires Unsupervised Metrics*\
 A. Marcos Morales, M. Leibovich, S. Mohan, J. L. Vincent, P. Haluai, M. Tan, P. A. Crozier, C. Fernandez-Granda; **Proceedings of the 40th International Conference on Machine Learning (ICML)**, PMLR 2023 Vol. 202, pp. 23937-23957.\
 [https://arxiv.org/abs/2210.05553](https://arxiv.org/abs/2210.05553)
+
+*Visualizing Nanoparticle Surface Dynamics and Instabilities Enabled by Deep Denoising*\
+P. A. Crozier , M. Leibovich, P. Haluai, M. Tan, A. M. Thomas, J. Vincent, S. Mohan, A. Marcos Morales, S. A. Kulkarni, D. S. Matteson, Y. Wang, C. Fernandez-Granda ; **Science**, 2025, 387, 949-954.\
+[https://doi.org/10.1126/science.ads2688](https://doi.org/10.1126/science.ads2688)
 
 ## Support
 
