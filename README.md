@@ -45,6 +45,23 @@ Some arguments needs parameters. Replace the `$parameter` with the actual parame
 * `--batch-size $NUM `: Number of images per batch for training (default: 1). Adjust based on available GPU memory.
 * `--image-size $NUM`: Size of the square image patches used for training (default: 256).
 * *(new)*`--multiply $NUM` : Multiply the data by an integer to manually normalize the data (default: 1).
+  
+### Data Preparation
+
+The current version of the code supports input files in `.tif` (or `.tiff`) and `.npy` formats. Since the neural network internally operates on NumPy arrays, it is **recommended** to convert your input data into `.npy` format before running the model.
+
+When preparing your data, please ensure that the **dimension order** matches the expected format. **The last two dimensions should always correspond to the *frame* (i.e., the 2D image or spectrum).**  
+
+|      Data Type      |       Data Dimension      | Sequence Dimension | Frame Dimension |
+|:-------------------:|:-------------------------:|:------------------:|:---------------:|
+|      TEM Movie      |      $3D, (t, x, y)$      |         $t$        |     $(x, y)$    |
+|   Time-Series EELS  |   $3D, (t, \Delta E, q)$  |         $t$        | $(\Delta E, q)$ |
+|    EELS Line-Scan   |   $3D, (x, \Delta E, q)$  |         $x$        | $(\Delta E, q)$ |
+|  EEL Spectrum Image | $4D, (x, y, \Delta E, q)$ |       $(x,y)$      | $(\Delta E, q)$ |
+
+To avoid dependency and compatibility issues with specialized file formats (e.g., `.dm4`, `.hdf5`, etc.), this repository does **not** include conversion utilities.
+
+If you encounter difficulties converting your data into the correct format, please feel free to contact us for assistance.
 
 ### Examples
 
