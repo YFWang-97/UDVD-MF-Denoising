@@ -3,6 +3,9 @@
 
 ## Updates
 
+### 2026.01.07
+- Dependecies modified in `environment.yaml` for better installation compatibility.
+
 ### 2025.05.05
 - More input type: `.npy`
 - Support 4D dataset
