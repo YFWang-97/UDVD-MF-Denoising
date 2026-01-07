@@ -87,8 +87,12 @@ A. Marcos Morales, M. Leibovich, S. Mohan, J. L. Vincent, P. Haluai, M. Tan, P. 
 [https://arxiv.org/abs/2210.05553](https://arxiv.org/abs/2210.05553)
 
 *Visualizing Nanoparticle Surface Dynamics and Instabilities Enabled by Deep Denoising*\
-P. A. Crozier , M. Leibovich, P. Haluai, M. Tan, A. M. Thomas, J. Vincent, S. Mohan, A. Marcos Morales, S. A. Kulkarni, D. S. Matteson, Y. Wang, C. Fernandez-Granda ; **Science**, 2025, 387, 949-954.\
+P. A. Crozier, M. Leibovich, P. Haluai, M. Tan, A. M. Thomas, J. Vincent, S. Mohan, A. Marcos Morales, S. A. Kulkarni, D. S. Matteson, Y. Wang, C. Fernandez-Granda; **Science**, 2025, 387, 949-954.\
 [https://doi.org/10.1126/science.ads2688](https://doi.org/10.1126/science.ads2688)
+
+*Revealing Information from Weak Signals in Electron Energy-Loss Spectroscopy with a Deep Denoiser*\
+Y. Wang, M. Tan, C. Fernandez-Granda, P. A. Crozier; **Micron**, 2026, 201, 103957.\
+[https://doi.org/10.1016/j.micron.2025.103957](https://doi.org/10.1016/j.micron.2025.103957)
 
 ## Support
 
