@@ -3,6 +3,9 @@
 
 ## Updates
 
+### 2026.10.27
+- Adding support for installation through `uv`.
+
 ### 2026.01.07
 - Dependecies modified in `environment.yaml` for better installation compatibility.
 
@@ -38,52 +41,48 @@ Install the original Conda environment using `environment.yaml`:
 conda env create -n denoise-HDR -f environment.yaml
 ```
 
-#### Option 2: uv (without Conda)
+#### Option 2: uv
 
-First, [install uv](https://docs.astral.sh/uv/getting-started/installation/).
-The included `pyproject.toml` and `.python-version` provide an alternative
-Python 3.11 environment in the local `.venv/` directory.
-
-For NVIDIA GPUs, check your GPU and the NVIDIA driver on a GPU compute node:
-
-```bash
-nvidia-smi
-```
-
-Choose a PyTorch CUDA build compatible with the **GPU's compute capability,
-NVIDIA driver, and PyTorch version**. The GPU model alone does not determine
-which CUDA build must be installed. For example:
-
-| GPU | Compute capability | Example compatible PyTorch build |
-| --- | --- | --- |
-| NVIDIA V100 (Volta) | 7.0 | PyTorch 2.0.1 with CUDA 11.8 (`cu118`) |
-| NVIDIA A100 (Ampere) | 8.0 | PyTorch 2.0.1 with CUDA 11.8 (`cu118`); CUDA 12.x with a suitably supported newer PyTorch version |
-
-**This repository currently provides a CUDA 11.8 (`cu118`) option**, which
-works for both V100 and A100 when the NVIDIA driver is compatible:
+For systems have uv installed, the included `pyproject.toml` and `.python-version` provide an alternative Python 3.11 environment in the local `.venv/` directory:
 
 ```bash
 uv python install 3.11
 uv sync --extra cu118
 ```
 
-For a CPU-only installation, use `uv sync --extra cpu`. Add `--extra notebooks`
-if you also need the notebook tools. Choose only one of `cu118` and `cpu`.
+#### GPU and CUDA Support
 
-For other GPUs or CUDA versions, consult the
-[NVIDIA compute capability list](https://developer.nvidia.com/cuda/gpus) and
-[PyTorch's available builds](https://pytorch.org/get-started/previous-versions/).
-Other CUDA builds require corresponding changes to the PyTorch packages and
-indexes in `pyproject.toml`: switching the extra name alone is not sufficient.
-The `CUDA Version` reported by `nvidia-smi` is the maximum CUDA version
-supported by the driver, not necessarily the PyTorch runtime version.
 
-You can generate and commit `uv.lock` using `uv lock` without a GPU; once a
-lockfile is committed, `uv sync --locked --extra cu118` installs from that lock.
+Both installation options install **PyTorch 2.0.1 with CUDA 11.8** by default. To verify that it works on your GPU, check your GPU and the NVIDIA driver on a GPU compute node:
+
+```bash
+nvidia-smi
+```
+
+Then, **after activating the environment** (see [Running](#running)), verify
+that PyTorch can use the GPU:
+
+```bash
+python -c "import torch; print('PyTorch:', torch.__version__); print('CUDA:', torch.version.cuda); print('GPU available:', torch.cuda.is_available())"
+```
+
+The PyTorch CUDA build must be compatible with the **GPU's compute capability, NVIDIA driver, and PyTorch version**. The GPU model alone does not determine which CUDA build must be installed. For example:
+
+| GPU | Compute capability | Example compatible PyTorch build |
+| --- | --- | --- |
+| NVIDIA V100 (Volta) | 7.0 | PyTorch 2.0.1 with CUDA 11.8 (`cu118`) |
+| NVIDIA A100 (Ampere) | 8.0 | PyTorch 2.0.1 with CUDA 11.8 (`cu118`); CUDA 12.x with a suitably supported newer PyTorch version |
+
+The default CUDA 11.8 build works for both V100 and A100 when the NVIDIA
+driver is compatible. The `CUDA Version` reported by `nvidia-smi` is the
+maximum CUDA version supported by the driver, not necessarily the PyTorch
+runtime version.
+
+For other GPUs or CUDA versions, consult the [NVIDIA compute capability list](https://developer.nvidia.com/cuda/gpus) and [PyTorch's available builds](https://pytorch.org/get-started/previous-versions/). Other CUDA builds require corresponding changes to the PyTorch packages: `pytorch` and `pytorch-cuda` in `environment.yaml` for Conda, or the PyTorch packages and indexes in `pyproject.toml` for uv (switching the extra name alone is not sufficient).
 
 ### Running
 
-Activate the environment associated with your installation method.
+Activate the environment associated with your installation method. 
 
 If you installed with Conda:
 
@@ -91,14 +90,19 @@ If you installed with Conda:
 conda activate denoise-HDR
 ```
 
-If you installed with uv, run this from the repository root (Linux/macOS):
+If you installed with uv: 
 
 ```bash
 source .venv/bin/activate
 ```
 
-**After activation, use the original `python` commands. `uv run` is not
-required.** For example:
+Change directory to repository root:
+
+```bash
+cd /path/to/repository
+```
+
+Replacing the `/path/to/repository` with the actual directory. Run the training+denoising script with following command.
 
 ```bash
 python denoise_mf.py --data /path/to/movie.tif --include-neighbor
@@ -113,15 +117,6 @@ python denoise_mf.py --data /path/to/movie.tif \
     --include-neighbor --multiply 1
 ```
 
-To verify CUDA after installing with uv, run the following on a GPU compute
-node **after activating `.venv`**:
-
-```bash
-python -c "import torch; print('PyTorch:', torch.__version__); print('CUDA:', torch.version.cuda); print('GPU available:', torch.cuda.is_available())"
-```
-
-Use `deactivate` to leave a uv virtual environment, or `conda deactivate` to
-leave a Conda environment. See the arguments below for the available flags.
 
 ### Arguments
 Some arguments needs parameters. Replace the `$parameter` with the actual parameters. 
@@ -159,9 +154,9 @@ The example files can be downloaded from [here](https://www.dropbox.com/scl/fo/u
 To preproduce the denoised result, run the following command:
 
 ```shell
-python denoise_mf.py --data "PATH TO THE FILE/PtCeO2_030303.tif" --include-neighbor 
+python denoise_mf.py --data "path/to/the/file/PtCeO2_030303.tif" --include-neighbor 
 ```
-Replacing the `PATH TO THE FILE` with the actual directory to the raw video file location. This line will denoise the TEM movie. After the denoising process completed, the denoised result `PtCeO2_030303_udvd_mf.npy` can be found in the same directory as the input file. 
+Replacing the `path/to/the/file` with the actual directory to the raw video file location. This line will denoise the TEM movie. After the denoising process completed, the denoised result `PtCeO2_030303_udvd_mf.npy` can be found in the same directory as the input file. 
 
 ## Citation
 
